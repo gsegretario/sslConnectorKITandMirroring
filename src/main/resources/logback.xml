@@ -1,0 +1,30 @@
+<configuration>
+    <!-- File di log con rotazione giornaliera -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/sslConnector.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- File di backup giornalieri -->
+            <fileNamePattern>logs/sslConnector.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory> <!-- Mantieni 7 giorni -->
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console opzionale -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Livello di log globale -->
+    <root level="info">
+        <appender-ref ref="FILE" />
+        <!-- Se vuoi anche log su console, sblocca la riga sotto -->
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

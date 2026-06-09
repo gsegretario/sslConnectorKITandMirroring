@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flow-diagram",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "7788", "--directory", "D:\\OneDrive - S3K S.p.A\\EclipseWS\\sslConnectorKITandMirroring"],
+      "port": 7788
+    }
+  ]
+}

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1600">
+<title>SSL Connector - Business Flow</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0f1117;
+    color: #e0e0e0;
+    padding: 30px 20px;
+    min-width: 1550px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #7a8fa6;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+  }
+
+  /* LANE CONTAINER */
+  .lanes {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  /* SINGLE LANE */
+  .lane {
+    flex: 1;
+    background: #161b26;
+    border-radius: 12px;
+    border: 1px solid #252d3d;
+    overflow: hidden;
+    min-width: 180px;
+  }
+
+  .lane-header {
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .lane-body {
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* BLOCKS */
+  .block {
+    border-radius: 8px;
+    padding: 10px 10px;
+    position: relative;
+  }
+
+  .block-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+
+  .block-sub {
+    font-size: 10px;
+    color: #7a8fa6;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 2px 2px;
+    white-space: nowrap;
+  }
+
+  .attr {
+    font-size: 10px;
+    color: #c9d1d9;
+    margin: 2px 0;
+    padding-left: 8px;
+    border-left: 2px solid;
+    line-height: 1.5;
+  }
+
+  .arrow-down {
+    text-align: center;
+    color: #3a4d6a;
+    font-size: 18px;
+    line-height: 1;
+    margin: -2px 0;
+  }
+
+  .badge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* CONDITION BLOCK */
+  .condition {
+    background: #1e2433;
+    border: 1px dashed #3d5a80;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 10px;
+    color: #7a8fa6;
+  }
+  .condition .cond-q {
+    color: #e8b84b;
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  .cond-branch {
+    padding: 3px 0 3px 10px;
+    border-left: 2px solid;
+    margin: 3px 0;
+    font-size: 10px;
+  }
+
+  /* COLOR THEMES PER LANE */
+  /* Lane 1: INPUT EVENT - blue */
+  .l1 .lane-header { background: #1e3a5f; color: #5ea8f5; border-bottom: 2px solid #2d6bc4; }
+  .l1 .block { background: #1a2b42; border: 1px solid #2d5a8e; }
+  .l1 .block-title { color: #5ea8f5; }
+  .l1 .attr { border-color: #2d6bc4; }
+  .l1 .tag { background: #1e3a5f; color: #5ea8f5; border: 1px solid #2d6bc4; }
+
+  /* Lane 2: SESSION / CLIENT - purple */
+  .l2 .lane-header { background: #2d1f4e; color: #b794f4; border-bottom: 2px solid #6b46c1; }
+  .l2 .block { background: #221840; border: 1px solid #4a2f9a; }
+  .l2 .block-title { color: #b794f4; }
+  .l2 .attr { border-color: #6b46c1; }
+  .l2 .tag { background: #2d1f4e; color: #b794f4; border: 1px solid #6b46c1; }
+
+  /* Lane 3: GET EngItem - teal */
+  .l3 .lane-header { background: #0d3d3d; color: #4ecdc4; border-bottom: 2px solid #2a9d8f; }
+  .l3 .block { background: #0a2e2e; border: 1px solid #1a6b60; }
+  .l3 .block-title { color: #4ecdc4; }
+  .l3 .attr { border-color: #2a9d8f; }
+  .l3 .tag { background: #0d3d3d; color: #4ecdc4; border: 1px solid #2a9d8f; }
+
+  /* Lane 4: Classification - orange */
+  .l4 .lane-header { background: #3d2200; color: #f6ad55; border-bottom: 2px solid #dd6b20; }
+  .l4 .block { background: #2d1a00; border: 1px solid #9c4b00; }
+  .l4 .block-title { color: #f6ad55; }
+  .l4 .attr { border-color: #dd6b20; }
+  .l4 .tag { background: #3d2200; color: #f6ad55; border: 1px solid #dd6b20; }
+  .l4 .condition { background: #1a1000; border-color: #9c4b00; }
+
+  /* Lane 5: MBOM - green */
+  .l5 .lane-header { background: #0a3d1a; color: #68d391; border-bottom: 2px solid #276749; }
+  .l5 .block { background: #072b12; border: 1px solid #1a5c32; }
+  .l5 .block-title { color: #68d391; }
+  .l5 .attr { border-color: #276749; }
+  .l5 .tag { background: #0a3d1a; color: #68d391; border: 1px solid #276749; }
+  .l5 .condition { background: #050f08; border-color: #1a5c32; }
+
+  /* Lane 6: KIT - pink */
+  .l6 .lane-header { background: #3d0a2a; color: #f687b3; border-bottom: 2px solid #b83280; }
+  .l6 .block { background: #2d0520; border: 1px solid #8b2563; }
+  .l6 .block-title { color: #f687b3; }
+  .l6 .attr { border-color: #b83280; }
+  .l6 .tag { background: #3d0a2a; color: #f687b3; border: 1px solid #b83280; }
+  .l6 .condition { background: #1a0312; border-color: #8b2563; }
+
+  /* Lane 7: Change Action - yellow */
+  .l7 .lane-header { background: #3d3300; color: #f6e05e; border-bottom: 2px solid #b7791f; }
+  .l7 .block { background: #2d2500; border: 1px solid #8a6700; }
+  .l7 .block-title { color: #f6e05e; }
+  .l7 .attr { border-color: #b7791f; }
+  .l7 .tag { background: #3d3300; color: #f6e05e; border: 1px solid #b7791f; }
+
+  /* Lane 8: Lifecycle - red */
+  .l8 .lane-header { background: #3d0f0f; color: #fc8181; border-bottom: 2px solid #c53030; }
+  .l8 .block { background: #2d0808; border: 1px solid #8b1a1a; }
+  .l8 .block-title { color: #fc8181; }
+  .l8 .attr { border-color: #c53030; }
+  .l8 .tag { background: #3d0f0f; color: #fc8181; border: 1px solid #c53030; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #7a8fa6;
+  }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+
+  .verb-get  { background: #1e4d6b; color: #63b3ed; border: 1px solid #2d7bbd; }
+  .verb-post { background: #1e4d1e; color: #68d391; border: 1px solid #2d8f3a; }
+  .verb-patch{ background: #4d3b00; color: #ecc94b; border: 1px solid #9c7200; }
+  .verb-ack  { background: #1a3d1a; color: #9ae6b4; border: 1px solid #276729; }
+
+  .note {
+    font-size: 9.5px;
+    color: #556677;
+    font-style: italic;
+    margin-top: 4px;
+    padding-left: 8px;
+  }
+  .warn-tag {
+    background: #4d1a00;
+    color: #fc8181;
+    border: 1px solid #c53030;
+  }
+  .retry-block {
+    background: #1a1a00;
+    border: 1px dashed #8a7a00;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 10px;
+    color: #d4c44b;
+    margin-top: 4px;
+  }
+
+  .spacer { height: 8px; }
+  .spacer-lg { height: 16px; }
+
+  .step-num {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 9px;
+    font-weight: 800;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<h1>SSL Connector KIT &amp; Mirroring — Business Logic Flow</h1>
+<div class="subtitle">Input → Parsing → Session → Classificazione → MBOM → KIT → Change Action → Lifecycle</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#1e4d6b;border:1px solid #2d7bbd"></div> GET (lettura)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1e4d1e;border:1px solid #2d8f3a"></div> POST (creazione)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4d3b00;border:1px solid #9c7200"></div> PATCH (modifica)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3d1f4e;border:1px solid #6b36c1"></div> Cache / Sessione</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3d0000;border:1px solid #c53030"></div> Lifecycle / Stato</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2d2200;border:1px solid #8a6700"></div> Condizione / Check</div>
+</div>
+
+<div class="lanes">
+
+  <!-- ═══════════════════════════════ LANE 1: INPUT EVENT ═══════════════════════════ -->
+  <div class="lane l1">
+    <div class="lane-header">① Input JMS Event</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <div class="block-title">TextMessage ricevuto</div>
+        <div class="block-sub">Broker SSL</div>
+        <div class="attr" style="border-color:#5ea8f5">Topic: <b>3dsevents.OI000000677<br>.3DSpace.user</b></div>
+        <div class="attr" style="border-color:#5ea8f5">Consumer: <b>BatchUser-Mirror<br>MBOM-KIT_QUALITY</b></div>
+        <div class="attr" style="border-color:#5ea8f5">Protocol: <b>SSL port 61617</b></div>
+        <div class="attr" style="border-color:#5ea8f5">Failover: <b>2 broker</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Parsing JSON payload</div>
+        <div class="block-sub">Campi estratti</div>
+        <div class="tag">eventType</div>
+        <div class="tag">eventClass</div>
+        <div class="tag">subjectId</div>
+        <div class="tag">subjectType</div>
+        <div class="tag">nextState</div>
+        <div class="tag">authorization</div>
+        <div class="tag">company</div>
+        <div class="tag">collaborativeSpace</div>
+        <div class="tag">user</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="condition">
+        <div class="cond-q">⬥ FILTRO EVENTO</div>
+        <div class="cond-branch" style="border-color:#5ea8f5">
+          ✅ eventType = <b>"created"</b><br>
+          ✅ eventClass = <b>"Manufacturing Item"</b><br>
+          → <b>ELABORA</b>
+        </div>
+        <div class="cond-branch" style="border-color:#c53030">
+          ❌ altri eventi<br>
+          → <b>IGNORA</b>
+        </div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Build Security Context</div>
+        <div class="attr" style="border-color:#5ea8f5">Formato: <b>Role.Company<br>.CollaborativeSpace</b></div>
+        <div class="attr" style="border-color:#5ea8f5">Role fisso: <b>VPLMProjectLeader</b></div>
+        <div class="attr" style="border-color:#5ea8f5">Header: <b>SecurityContext</b></div>
+      </div>
+
+      <div class="spacer-lg"></div>
+
+      <div class="block" style="background:#0a1f0a; border-color:#276749">
+        <div class="block-title" style="color:#9ae6b4">✔ message.acknowledge()</div>
+        <div class="attr" style="border-color:#276749">Solo dopo elaborazione<br>completa (CLIENT_ACK)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 2: SESSION ═══════════════════════════════ -->
+  <div class="lane l2">
+    <div class="lane-header">② Sessione / Client HTTP</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <div class="block-title">SessionManager.getClient()</div>
+        <div class="block-sub">Cache check</div>
+        <div class="attr" style="border-color:#6b46c1">Key: <b>userKey</b></div>
+        <div class="attr" style="border-color:#6b46c1">TTL: <b>20 minuti</b></div>
+        <div class="attr" style="border-color:#6b46c1">Thread-safe: <b>double-check lock</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="condition">
+        <div class="cond-q">⬥ CACHE HIT?</div>
+        <div class="cond-branch" style="border-color:#b794f4">
+          ✅ Sessione valida<br>→ <b>riusa Client3DXImpl</b>
+        </div>
+        <div class="cond-branch" style="border-color:#c53030">
+          ❌ Scaduta / assente<br>→ <b>crea nuovo client</b>
+        </div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Client3DXImpl.init()</div>
+        <div class="block-sub">Inizializzazione HTTP</div>
+        <div class="attr" style="border-color:#6b46c1">Legge: <b>Client3dExperience<br>.properties</b></div>
+        <div class="attr" style="border-color:#6b46c1">SSL: <b>TLSContext default JDK</b></div>
+        <div class="attr" style="border-color:#6b46c1">Timeout: <b>2 minuti</b></div>
+        <div class="attr" style="border-color:#6b46c1">Cookie: <b>CookieHandler ON</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Properties caricate</div>
+        <div class="tag">url_3dSpace</div>
+        <div class="tag">url_clm</div>
+        <div class="tag">url_createMBOM</div>
+        <div class="tag">clm_agent_id</div>
+        <div class="tag">clm_agent_pwd</div>
+        <div class="tag">securityContext</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">CSRF Token</div>
+        <div class="block-sub">Prima GET → header response</div>
+        <div class="attr" style="border-color:#6b46c1">Header: <b>ENO_CSRF_TOKEN</b></div>
+        <div class="attr" style="border-color:#6b46c1">Obbligatorio: <b>per ogni POST</b></div>
+      </div>
+
+      <div class="spacer-lg"></div>
+
+      <div class="block" style="background:#120d25; border: 1px solid #4a2f9a">
+        <div class="block-title" style="color:#b794f4">Retry Policy HTTP</div>
+        <div class="attr" style="border-color:#6b46c1">Tentativi: <b>3</b></div>
+        <div class="attr" style="border-color:#6b46c1">Backoff: <b>1s → 2s → 4s</b></div>
+        <div class="attr" style="border-color:#6b46c1">Trigger: <b>IOException</b></div>
+        <div class="attr" style="border-color:#6b46c1">Non-200: <b>Exception immediata</b></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 3: ENG ITEM ═══════════════════════════════ -->
+  <div class="lane l3">
+    <div class="lane-header">③ Recupero Engineering Item</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <span class="badge verb-get">GET</span>
+        <div class="block-title">getScopedEngItem(mfnId)</div>
+        <div class="block-sub">Input</div>
+        <div class="attr" style="border-color:#2a9d8f"><b>subjectId</b> (MFN Physical ID)</div>
+        <div class="block-sub" style="margin-top:6px">Output</div>
+        <div class="attr" style="border-color:#2a9d8f"><b>engId</b> (Engineering Physical ID)</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="condition">
+        <div class="cond-q">⬥ engId trovato?</div>
+        <div class="cond-branch" style="border-color:#4ecdc4">
+          ✅ engId valido<br>→ <b>prosegui</b>
+        </div>
+        <div class="cond-branch" style="border-color:#f6e05e">
+          ⚠ null / blank<br>→ <b>scheduleRetry()</b>
+        </div>
+      </div>
+
+      <div class="retry-block">
+        ⏱ <b>Retry schedulato: +15 min</b><br>
+        ScheduledExecutorService<br>
+        → richiama mfnRootManagement()
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-get">GET</span>
+        <div class="block-title">getEngineeringItemById(engId)</div>
+        <div class="block-sub">Attributi letti</div>
+        <div class="attr" style="border-color:#2a9d8f">title / name</div>
+        <div class="attr" style="border-color:#2a9d8f">revision</div>
+        <div class="attr" style="border-color:#2a9d8f">partNumber / code</div>
+        <div class="attr" style="border-color:#2a9d8f">COMAU_Code</div>
+        <div class="attr" style="border-color:#2a9d8f">COMAU_Eng_IsMBOMrequired</div>
+        <div class="attr" style="border-color:#2a9d8f">COMAU_Eng_IsKITrequired</div>
+        <div class="attr" style="border-color:#2a9d8f">state / policy</div>
+        <div class="attr" style="border-color:#2a9d8f">cestamp</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Check attributi COMAU</div>
+        <div class="condition" style="margin-top:4px">
+          <div class="cond-q">COMAU_Eng_IsMBOMrequired?</div>
+          <div class="cond-branch" style="border-color:#68d391">YES → avvia MBOM flow</div>
+          <div class="cond-branch" style="border-color:#556677">NO → skip MBOM</div>
+        </div>
+        <div class="condition" style="margin-top:6px">
+          <div class="cond-q">COMAU_Eng_IsKITrequired?</div>
+          <div class="cond-branch" style="border-color:#f687b3">YES → avvia KIT flow</div>
+          <div class="cond-branch" style="border-color:#556677">NO → skip KIT</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 4: CLASSIFICATION ═══════════════════════════ -->
+  <div class="lane l4">
+    <div class="lane-header">④ Classificazione MFN</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <span class="badge verb-get">GET</span>
+        <div class="block-title">getWhereClassified(engId)</div>
+        <div class="block-sub">Input</div>
+        <div class="attr" style="border-color:#dd6b20"><b>engId</b></div>
+        <div class="block-sub" style="margin-top:6px">Output</div>
+        <div class="attr" style="border-color:#dd6b20">Lista <b>classId[]</b> padre<br>(classi Library 3DX)</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">Loop per ogni classId</div>
+        <div class="block-sub">Iterazione classificazione</div>
+        <div class="attr" style="border-color:#dd6b20">Errori individuali loggati<br>e non bloccanti</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">classifyObject()</div>
+        <div class="block-sub">Input per ogni classe</div>
+        <div class="attr" style="border-color:#dd6b20">classID</div>
+        <div class="attr" style="border-color:#dd6b20">type (MFN type)</div>
+        <div class="attr" style="border-color:#dd6b20">identifier (MFN ID)</div>
+        <div class="attr" style="border-color:#dd6b20">relativePath:<br>/dslc/changeaction/ o<br>/dsmfg/dsmfg:MfgItem/</div>
+        <div class="block-sub" style="margin-top:6px">Oggetto creato</div>
+        <div class="attr" style="border-color:#dd6b20">ClassifiedItem link<br>MFN ↔ Library Class</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block" style="background:#1a0d00; border-color:#9c4b00">
+        <div class="block-title" style="color:#f6ad55">Risultato classificazione</div>
+        <div class="attr" style="border-color:#dd6b20">MFN classificato in tutte<br>le classi dell'Eng Item</div>
+        <div class="note">→ visibilità Library 3DX garantita</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 5: MBOM ═══════════════════════════════ -->
+  <div class="lane l5">
+    <div class="lane-header">⑤ Mirror MBOM</div>
+    <div class="lane-body">
+
+      <div class="condition">
+        <div class="cond-q">⬥ CA_MBOMMirrorBehavior</div>
+        <div class="cond-branch" style="border-color:#68d391">CREATE_MBOM</div>
+        <div class="cond-branch" style="border-color:#9ae6b4">CREATE_AND_RELEASE_MBOM</div>
+        <div class="cond-branch" style="border-color:#556677">DO_NOTHING → skip</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">expandEngineeringItem(engId)</div>
+        <div class="block-sub">EBOM attuale</div>
+        <div class="attr" style="border-color:#276749">depth: <b>ALL</b></div>
+        <div class="attr" style="border-color:#276749">Output: <b>struttura figli EBOM</b></div>
+        <div class="attr" style="border-color:#276749">Mappa: <b>physicalId → qty</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">getRevisionsPath()</div>
+        <div class="block-sub">Revisione precedente</div>
+        <div class="attr" style="border-color:#276749">Input: <b>subjectId MFN</b></div>
+        <div class="attr" style="border-color:#276749">Output: <b>MFN precedente</b><br>(sequenza COMAU: A→B→C...)</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">expandEngineeringItem(prev)</div>
+        <div class="block-sub">EBOM revisione precedente</div>
+        <div class="attr" style="border-color:#276749">Output: <b>mappa qty precedente</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">findDifferences()</div>
+        <div class="block-sub">Confronto EBOM</div>
+        <div class="attr" style="border-color:#276749">Componenti aggiunti → <b>nuove istanze</b></div>
+        <div class="attr" style="border-color:#276749">Componenti rimossi → <b>patch qty commento</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">createMFGItemStructure()</div>
+        <div class="block-sub">Oggetto MBOM creato</div>
+        <div class="attr" style="border-color:#276749">EngItemId</div>
+        <div class="attr" style="border-color:#276749">ManItemId</div>
+        <div class="attr" style="border-color:#276749">XML link authoring config</div>
+        <div class="attr" style="border-color:#276749">CSRF token obbligatorio</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">createNewManufacturingItemInstance<br>UnderChange()</div>
+        <div class="block-sub">Istanze MFN create</div>
+        <div class="attr" style="border-color:#276749">parentMFNId</div>
+        <div class="attr" style="border-color:#276749">changeId</div>
+        <div class="attr" style="border-color:#276749">body: mfnId figlio</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 6: KIT ═══════════════════════════════ -->
+  <div class="lane l6">
+    <div class="lane-header">⑥ Gestione KIT</div>
+    <div class="lane-body">
+
+      <div class="condition">
+        <div class="cond-q">⬥ COMAU_CABS_KITManagement</div>
+        <div class="cond-branch" style="border-color:#f687b3">CREATE_KIT</div>
+        <div class="cond-branch" style="border-color:#fbb6ce">CREATE_AND_RELEASE_KIT</div>
+        <div class="cond-branch" style="border-color:#556677">DO_NOTHING → skip</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">createNewManufacturingItem() KIT</div>
+        <div class="block-sub">Attributi valorizzati</div>
+        <div class="attr" style="border-color:#b83280">type: <b>Provide / CreateKit</b></div>
+        <div class="attr" style="border-color:#b83280">COMAU_MFG_ItemLevel</div>
+        <div class="attr" style="border-color:#b83280">COMAU_MFG_ItemType</div>
+        <div class="attr" style="border-color:#b83280">Title (dal EngItem)</div>
+        <div class="attr" style="border-color:#b83280">securityContext</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">expandManufacturingItem()</div>
+        <div class="block-sub">Struttura MBOM KIT</div>
+        <div class="attr" style="border-color:#b83280">Primo livello only</div>
+        <div class="attr" style="border-color:#b83280">Output: figli non-released</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-patch">PATCH</span>
+        <div class="block-title">patchModifyManufacturing<br>UnderChange()</div>
+        <div class="block-sub">Attributi modificati</div>
+        <div class="attr" style="border-color:#b83280">cestamp (ottimistico lock)</div>
+        <div class="attr" style="border-color:#b83280">removedQuantity (commento)</div>
+        <div class="attr" style="border-color:#b83280">changeId</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <div class="block-title">fillProposedChange()</div>
+        <div class="block-sub">Proposed items su change</div>
+        <div class="attr" style="border-color:#b83280">Lista figli non-released</div>
+        <div class="attr" style="border-color:#b83280">PROPOSEDCHANGES array</div>
+        <div class="attr" style="border-color:#b83280">type per ogni item</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 7: CHANGE ACTION ═══════════════════════════ -->
+  <div class="lane l7">
+    <div class="lane-header">⑦ Change Action</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">createChangeAction()</div>
+        <div class="block-sub">Oggetto creato</div>
+        <div class="attr" style="border-color:#b7791f">title (da EngItem title)</div>
+        <div class="attr" style="border-color:#b7791f">purpose / description</div>
+        <div class="attr" style="border-color:#b7791f">type: <b>CreateAssembly / Provide</b></div>
+        <div class="attr" style="border-color:#b7791f">securityContext</div>
+        <div class="attr" style="border-color:#b7791f">Output: <b>changeId</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-patch">PATCH</span>
+        <div class="block-title">patchChange() — attributi</div>
+        <div class="block-sub">Attributi custom valorizzati</div>
+        <div class="attr" style="border-color:#b7791f">cestamp (lock ottimistico)</div>
+        <div class="attr" style="border-color:#b7791f">COMAU_CA_MBOMMirrorBehavior</div>
+        <div class="attr" style="border-color:#b7791f">COMAU_CABS_KITManagement</div>
+        <div class="attr" style="border-color:#b7791f">COMAU_CABS_RelatedEngId</div>
+        <div class="attr" style="border-color:#b7791f">assignees (lista utenti)</div>
+        <div class="attr" style="border-color:#b7791f">approvers (lista utenti)</div>
+        <div class="attr" style="border-color:#b7791f">PROPOSEDCHANGES[]</div>
+        <div class="attr" style="border-color:#b7791f">mfnType</div>
+        <div class="attr" style="border-color:#b7791f">compareIds</div>
+        <div class="attr" style="border-color:#b7791f">kitAction</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">classifyObject() su Change</div>
+        <div class="block-sub">Classifica il Change nelle stesse classi EngItem</div>
+        <div class="attr" style="border-color:#b7791f">classId[] (da getWhereClassified)</div>
+        <div class="attr" style="border-color:#b7791f">relativePath: /dslc/changeaction/</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">changeOwner()</div>
+        <div class="block-sub">Trasferimento ownership</div>
+        <div class="attr" style="border-color:#b7791f">company</div>
+        <div class="attr" style="border-color:#b7791f">collaborativeSpace</div>
+        <div class="attr" style="border-color:#b7791f">user (dall'evento JMS)</div>
+        <div class="attr" style="border-color:#b7791f">changeId</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ LANE 8: LIFECYCLE ═══════════════════════════ -->
+  <div class="lane l8">
+    <div class="lane-header">⑧ Lifecycle &amp; Approvazione</div>
+    <div class="lane-body">
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">promoteObject()</div>
+        <div class="block-sub">Cambio stato Change Action</div>
+        <div class="attr" style="border-color:#c53030">id: <b>changeId</b></div>
+        <div class="attr" style="border-color:#c53030">nextState: <b>"In Approval"</b></div>
+        <div class="attr" style="border-color:#c53030">endpoint: <b>/dslc/maturity/changeState</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-get">GET</span>
+        <div class="block-title">getChangeActionById(changeId)</div>
+        <div class="block-sub">Dati per approvazione</div>
+        <div class="attr" style="border-color:#c53030">cestamp aggiornato</div>
+        <div class="attr" style="border-color:#c53030">approvers list</div>
+        <div class="attr" style="border-color:#c53030">current state</div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">approveChangeActionById()</div>
+        <div class="block-sub">Approvazione automatica</div>
+        <div class="attr" style="border-color:#c53030">changeActionId</div>
+        <div class="attr" style="border-color:#c53030">cestamp (lock ottimistico)</div>
+        <div class="attr" style="border-color:#c53030">approvers valorizzati</div>
+        <div class="attr" style="border-color:#c53030">Stato finale: <b>APPROVED</b></div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="condition">
+        <div class="cond-q">⬥ Se CREATE_AND_RELEASE</div>
+        <div class="cond-branch" style="border-color:#fc8181">
+          <b>promoteObject()</b><br>
+          MFN → <b>RELEASED</b>
+        </div>
+        <div class="cond-branch" style="border-color:#556677">
+          Solo CREATE<br>→ resta in Work
+        </div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <div class="block">
+        <span class="badge verb-post">POST</span>
+        <div class="block-title">createIssue() [se errore]</div>
+        <div class="block-sub">Tracciamento anomalie</div>
+        <div class="attr" style="border-color:#c53030">title (descrizione errore)</div>
+        <div class="attr" style="border-color:#c53030">assignee (utente evento)</div>
+        <div class="attr" style="border-color:#c53030">reviewers</div>
+        <div class="attr" style="border-color:#c53030">resolvedBy: changeId</div>
+        <div class="note">→ stato: "In Review" automatico</div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="block" style="background:#071a07; border-color:#276729">
+        <div class="block-title" style="color:#9ae6b4">FINE ELABORAZIONE</div>
+        <div class="attr" style="border-color:#276749">message.acknowledge()</div>
+        <div class="attr" style="border-color:#276749">Log stato finale</div>
+        <div class="note">→ messaggio rimosso dalla coda</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NOTE -->
+<div style="margin-top:20px; text-align:center; font-size:10px; color:#3a4d5c; letter-spacing:1px;">
+  com.comau:sslConnector v0.0.1-SNAPSHOT &nbsp;|&nbsp; Java 11 &nbsp;|&nbsp; ActiveMQ SSL &nbsp;|&nbsp; 3DEXPERIENCE OI000000677-eu1
+</div>
+
+</body>
+</html>

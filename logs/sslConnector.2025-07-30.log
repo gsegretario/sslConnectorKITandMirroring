@@ -1,0 +1,72 @@
+2025-07-30 12:00:30.380 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 12:00:30.737 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 12:00:30.737 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 12:00:30.753 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 12:00:30.905 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 12:00:30.906 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
+2025-07-30 12:32:26.842 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 12:32:27.470 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 12:32:27.470 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 12:32:27.496 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 12:32:27.611 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 12:32:27.611 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
+2025-07-30 12:32:27.611 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"created","id":"3ABE8688104218006889ED7500002F93","time":"2025-07-30T10:01:25.145+0000","timestamp":1753869685145,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Change","eventType":"created","eventTime":1753869685145,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMProjectLeader.Comp-0000001.CS_COMAU_PUBLIC","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Change Action","identifier":"3ABE8688104218006889ED4D00002F91","relativePath":"/resources/v1/modeler/dslc/changeaction/3ABE8688104218006889ED4D00002F91"}}}
+2025-07-30 12:32:27.612 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T12-32-27-611516600.json
+2025-07-30 12:32:27.801 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: created
+2025-07-30 12:32:27.801 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Change
+2025-07-30 12:32:27.801 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889ED4D00002F91
+2025-07-30 12:32:27.802 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"statusChanged","id":"3ABE8688104218006889EDBC00002F97","time":"2025-07-30T10:02:36.129+0000","timestamp":1753869756129,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Change","eventType":"statusChanged","eventTime":1753869756129,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMProjectLeader.Comp-0000001.CS_COMAU_PUBLIC","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Change Action","identifier":"3ABE8688104218006889ED4D00002F91","relativePath":"/resources/v1/modeler/dslc/changeaction/3ABE8688104218006889ED4D00002F91"},"predicate":"state","object":{"@type":"xs:String","Value":"In Work"}}}
+2025-07-30 12:32:27.803 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T12-32-27-802757300.json
+2025-07-30 12:32:27.803 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: statusChanged
+2025-07-30 12:32:27.803 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Change
+2025-07-30 12:32:27.803 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889ED4D00002F91
+2025-07-30 12:32:27.804 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"statusChanged","id":"3ABE8688104218006889F08700002FDB","time":"2025-07-30T10:14:31.042+0000","timestamp":1753870471042,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Change","eventType":"statusChanged","eventTime":1753870471042,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMProjectLeader.Comp-0000001.CS_COMAU_PUBLIC","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Change Action","identifier":"3ABE8688104218006889ED4D00002F91","relativePath":"/resources/v1/modeler/dslc/changeaction/3ABE8688104218006889ED4D00002F91"},"predicate":"state","object":{"@type":"xs:String","Value":"In Approval"}}}
+2025-07-30 12:32:27.805 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T12-32-27-804757400.json
+2025-07-30 12:32:27.805 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: statusChanged
+2025-07-30 12:32:27.805 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Change
+2025-07-30 12:32:27.806 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889ED4D00002F91
+2025-07-30 12:32:27.806 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"statusChanged","id":"3ABE8688104218006889F0A200002FE1","time":"2025-07-30T10:14:58.985+0000","timestamp":1753870498985,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Change","eventType":"statusChanged","eventTime":1753870498985,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMAdmin.Company Name.Default","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Change Action","identifier":"3ABE8688104218006889ED4D00002F91","relativePath":"/resources/v1/modeler/dslc/changeaction/3ABE8688104218006889ED4D00002F91"},"predicate":"state","object":{"@type":"xs:String","Value":"Approved"}}}
+2025-07-30 12:32:27.807 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T12-32-27-806758500.json
+2025-07-30 12:32:27.807 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: statusChanged
+2025-07-30 12:32:27.807 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Change
+2025-07-30 12:32:27.807 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889ED4D00002F91
+2025-07-30 12:32:27.808 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"statusChanged","id":"3ABE8688104218006889F0A200002FE3","time":"2025-07-30T10:14:58.995+0000","timestamp":1753870498995,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Change","eventType":"statusChanged","eventTime":1753870498995,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMAdmin.Company Name.Default","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Change Action","identifier":"3ABE8688104218006889ED4D00002F91","relativePath":"/resources/v1/modeler/dslc/changeaction/3ABE8688104218006889ED4D00002F91"},"predicate":"state","object":{"@type":"xs:String","Value":"Complete"}}}
+2025-07-30 12:32:27.808 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T12-32-27-808759100.json
+2025-07-30 12:32:27.809 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: statusChanged
+2025-07-30 12:32:27.809 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Change
+2025-07-30 12:32:27.809 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889ED4D00002F91
+2025-07-30 12:56:47.064 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 12:56:47.267 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 12:56:47.268 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 12:56:47.298 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 12:56:47.423 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 12:56:47.423 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
+2025-07-30 13:00:35.012 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 13:00:35.188 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 13:00:35.188 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 13:00:35.224 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 13:00:35.359 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 13:00:35.359 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
+2025-07-30 13:05:03.771 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📩 Messaggio ricevuto:
+{"specversion":"1.0.0","source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"created","id":"3ABE8688104218006889FB560000305B","time":"2025-07-30T11:00:38.712+0000","timestamp":1753873238712,"metadata":{"serviceId":"3DSpace","geoId":"euw1","tenantId":"OI000315360"},"contenttype":"application/json","data":{"eventClass":"Task","eventType":"created","eventTime":1753873238712,"serviceName":"3DSpace","user":"genny_segretario","authorization":"VPLMProjectLeader.Company Name.Comau_Public","subject":{"source":"https://OI000315360-eu1-space.3dexperience.3ds.com/enovia","type":"Task","identifier":"3ABE8688104218006889FB53000185AE","relativePath":"/resources/v1/modeler/tasks/3ABE8688104218006889FB53000185AE"}}}
+2025-07-30 13:05:03.777 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 💾 Messaggio salvato in: C:\output_messages\msg_2025-07-30T13-05-03-772895.json
+2025-07-30 13:05:04.505 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Type: created
+2025-07-30 13:05:04.506 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Event Class: Task
+2025-07-30 13:05:04.507 [ActiveMQ Session Task-2] INFO  c.c.s.EIFConsumerMessageListener - 📌 Subject ID: 3ABE8688104218006889FB53000185AE
+2025-07-30 13:09:22.198 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 13:09:23.107 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 13:09:23.107 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 13:09:23.128 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 13:09:23.570 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 13:09:23.570 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
+2025-07-30 13:14:07.575 [ActiveMQ Task-1] INFO  o.a.a.t.failover.FailoverTransport - Successfully connected to ssl://stg001eu1-msgbus.3dexperience.3ds.com:61617?soTimeout=60000&soWriteTimeout=60000
+2025-07-30 13:14:07.792 [main] INFO  com.comau.sslConnector.Main - ✅ Connessione al broker JMS riuscita.
+2025-07-30 13:14:07.792 [main] INFO  com.comau.sslConnector.Main - 📡 ClientID impostato: BatchUser-8
+2025-07-30 13:14:07.827 [main] INFO  com.comau.sslConnector.Main - 📦 Sessione JMS creata.
+2025-07-30 13:14:07.943 [main] INFO  com.comau.sslConnector.Main - 🔄 Listener JMS registrato sulla topic: 3dsevents.OI000315360.3DSpace.user
+2025-07-30 13:14:07.943 [main] INFO  com.comau.sslConnector.Main - ⏳ In attesa di messaggi...
